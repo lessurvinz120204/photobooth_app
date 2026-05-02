@@ -1,3 +1,7 @@
+buildscript {
+    ext.kotlin_version = '1.7.10'
+}
+
 allprojects {
     repositories {
         google()
@@ -18,6 +22,17 @@ subprojects {
 
 subprojects {
     project.evaluationDependsOn(":app")
+    
+    // Fix namespace for plugins without namespace
+    afterEvaluate {
+        if (it.hasProperty('android')) {
+            it.android {
+                if (!it.android.namespace) {
+                    it.android.namespace = "com.example.${project.name}"
+                }
+            }
+        }
+    }
 }
 
 tasks.register<Delete>("clean") {

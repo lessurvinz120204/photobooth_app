@@ -28,8 +28,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.11.4' # Matches your current environment
-          channel: 'stable'
+          channel: 'stable' # This automatically finds the newest version
 
       # 4. Get dependencies (Fixes the pubspec issues)
       - name: Install dependencies

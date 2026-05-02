@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:gal/gal.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:camera/camera.dart';
 import '../models/photo_session.dart';
@@ -36,7 +36,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
       // Upload (Base64) then Save locally then Delete from DB
       String? docId = await _dbService.saveTemporaryImage(compressed);
-      await ImageGallerySaver.saveImage(compressed);
+      
+      // Save to gallery - need to write to temp file first
+      final tempDir = Directory.systemTemp;
+      final tempFile = File('${tempDir.path}/booth_${DateTime.now().millisecondsSinceEpoch}.png');
+      await tempFile.writeAsBytes(compressed);
+      await Gal.putImage(tempFile.path);
+      
       if (docId != null) await _dbService.deleteImage(docId);
 
       if (mounted) {

@@ -18,7 +18,7 @@ dependencies:
   # Standardized versions for multimedia
   camera: ^0.11.0 
   screenshot: ^3.0.0 
-  image_gallery_saver: ^2.0.2
+  gal: ^2.2.0
   flutter_image_compress: ^1.1.3
   path_provider: ^2.1.0
   permission_handler: ^11.3.0

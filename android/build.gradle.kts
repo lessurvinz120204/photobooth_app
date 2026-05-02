@@ -27,7 +27,7 @@ subprojects {
         // 2. The Robust Fix for JVM Target Compatibility
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
             kotlinOptions {
-                jvmTarget = "17"
+                targetCompatibility = "17"
             }
         }
     }

@@ -22,6 +22,10 @@ subprojects {
             if (android.namespace == null) {
                 android.namespace = project.group.toString()
             }
+            android.compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
+            }
         }
         
         // 2. Fix for Kotlin compilation - Using new compilerOptions DSL

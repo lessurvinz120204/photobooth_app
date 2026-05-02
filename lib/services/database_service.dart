@@ -1,24 +1,35 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<String?> saveTemporaryImage(Uint8List imageData) async {
+  Future<void> updateUserLastSeen(String userId) async {
     try {
-      String base64Image = base64Encode(imageData);
-      DocumentReference doc = await _db.collection('temp_booth').add({
-        'image_data': base64Image,
-        'created_at': FieldValue.serverTimestamp(),
-      });
-      return doc.id;
+      await _db.collection('users').doc(userId).set(
+        {
+          'last_seen': FieldValue.serverTimestamp(),
+          'is_anonymous': true,
+        },
+        SetOptions(merge: true),
+      );
     } catch (e) {
-      return null;
+      print("Error updating user: $e");
     }
   }
 
-  Future<void> deleteImage(String docId) async {
-    await _db.collection('temp_booth').doc(docId).delete();
+  Future<List<Map<String, dynamic>>> getUserPhotos(String userId) async {
+    try {
+      final query = await _db
+          .collection('photos')
+          .where('user_id', isEqualTo: userId)
+          .orderBy('timestamp', descending: true)
+          .limit(50)
+          .get();
+      
+      return query.docs.map((doc) => {...doc.data(), 'id': doc.id}).toList();
+    } catch (e) {
+      print("Error fetching photos: $e");
+      return [];
+    }
   }
 }

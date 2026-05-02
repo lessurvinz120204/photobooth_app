@@ -4,11 +4,13 @@ allprojects {
         mavenCentral()
     }
 }
+
 val newBuildDir: Directory =
     rootProject.layout.buildDirectory
         .dir("../../build")
         .get()
 rootProject.layout.buildDirectory.value(newBuildDir)
+
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
@@ -21,17 +23,20 @@ subprojects {
                 android.namespace = project.group.toString()
             }
         }
-        // 2. The Robust Fix for JVM Target Compatibility
+        
+        // 2. Fix for Kotlin compilation - Using new compilerOptions DSL
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-            kotlinOptions {
-                jvmTarget = "17"
+            compilerOptions {
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)relo
             }
         }
     }
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }

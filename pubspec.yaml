@@ -36,7 +36,7 @@ dependencies:
   camera: ^0.11.0
   camera_web: ^0.3.3 
   screenshot: ^3.0.0
-  image_gallery_saver: ^2.1.10
+  image_gallery_saver: ^2.0.3
   flutter_image_compress: ^2.3.0
   path_provider: ^2.1.0
   permission_handler: ^11.3.0

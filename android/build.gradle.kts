@@ -24,15 +24,15 @@ subprojects {
             }
         }
         
-        // 2. Fix for Kotlin compilation - Match with Java compilation
+        // 2. Fix for Kotlin compilation - Set to JVM 11 for library compatibility
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            compilerOptions.jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+            compilerOptions.jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
         }
         
-        // 3. Fix for Java compilation - Match with Kotlin
+        // 3. Fix for Java compilation - Match with Kotlin (JVM 11)
         tasks.withType<JavaCompile> {
-            sourceCompatibility = "17"
-            targetCompatibility = "17"
+            sourceCompatibility = "11"
+            targetCompatibility = "11"
         }
     }
 }

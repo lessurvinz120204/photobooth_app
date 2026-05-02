@@ -22,11 +22,21 @@ subprojects {
             if (android.namespace == null) {
                 android.namespace = project.group.toString()
             }
+            // Set compileSdkVersion and target compatibility
+            android.compileSdkVersion = 34
+            android.defaultConfig.targetSdkVersion = 34
+            android.defaultConfig.minSdkVersion = 21
         }
         
-        // 2. Fix for Kotlin compilation - Using new compilerOptions DSL
+        // 2. Fix for Kotlin compilation - Match with Java compilation
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             compilerOptions.jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        }
+        
+        // 3. Fix for Java compilation - Match with Kotlin
+        tasks.withType<JavaCompile> {
+            sourceCompatibility = "17"
+            targetCompatibility = "17"
         }
     }
 }

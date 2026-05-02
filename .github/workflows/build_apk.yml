@@ -3,7 +3,7 @@ name: Flutter Build APK
 on:
   push:
     branches:
-      - main  # Runs every time you push to the 'main' branch
+      - main
   pull_request:
     branches:
       - main
@@ -11,7 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       # 1. Check out the code from your repo
       - name: Checkout code
@@ -21,27 +20,35 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
+          cache: 'gradle'
 
       # 3. Setup Flutter (Matching your SDK)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable' # This automatically finds the newest version
+          channel: 'stable'
+          cache: true
 
       # 4. Get dependencies (Fixes the pubspec issues)
       - name: Install dependencies
         run: flutter pub get
 
       # 5. Build the APK
-      # Note: We use --debug or --release. For a simple GitHub upload, --release is best.
       - name: Build APK
         run: flutter build apk --release
 
-      # 6. Upload the APK to GitHub Actions so you can download it
+      # 6. Upload the APK to GitHub Actions
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: photobooth-app-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/apk/release/app-release.apk
+
+      # Optional: Create a release with the APK
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/app/outputs/apk/release/app-release.apk

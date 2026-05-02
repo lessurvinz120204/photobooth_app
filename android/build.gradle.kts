@@ -14,6 +14,17 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
+    
+    // Fix namespace for all library modules that don't have it
+    afterEvaluate {
+        if (pluginManager.hasPlugin("com.android.library")) {
+            extensions.findByType<com.android.build.gradle.LibraryExtension>()?.apply {
+                if (namespace == null) {
+                    namespace = "com.example.${project.name}"
+                }
+            }
+        }
+    }
 }
 
 subprojects {

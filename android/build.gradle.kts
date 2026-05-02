@@ -22,10 +22,6 @@ subprojects {
             if (android.namespace == null) {
                 android.namespace = project.group.toString()
             }
-            // Set compileSdkVersion and target compatibility
-            android.compileSdkVersion = 34
-            android.defaultConfig.targetSdkVersion = 34
-            android.defaultConfig.minSdkVersion = 21
         }
         
         // 2. Fix for Kotlin compilation - Match with Java compilation

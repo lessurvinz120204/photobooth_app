@@ -40,3 +40,16 @@ android {
 flutter {
     source = "../.."
 }
+
+// Fix for dependencies without namespace
+subprojects {
+    afterEvaluate {
+        if (pluginManager.hasPlugin('com.android.library')) {
+            android {
+                if (namespace == null) {
+                    namespace = "com.example.${project.name}"
+                }
+            }
+        }
+    }
+}
